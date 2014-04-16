@@ -1,7 +1,7 @@
 // binge@sf
 
-function divEscapedContentElement(message, style) {
-    return $('<div style="' + style + '"></div>').text(message);
+function divEscapedContentElement(message, style, attr) {
+    return $('<div style="' + style + '"' + attr + '></div>').text(message);
 }
 
 function divSystemContentElement(message) {
@@ -45,8 +45,12 @@ $(document).ready(function() {
     });
 
     socket.on('joinResult', function(result) {
-        $('#room').text(result.room);
-        $('#messages').append(divSystemContentElement('<span style="color: red;">' + 'Room changed.' + '</span>'));
+        if(result.success) {
+            $('#room').text(result.room);
+            $('#messages').append(divSystemContentElement('<span style="color: red;">' + 'Room changed.' + '</span>'));
+        } else {
+            $('#messages').append(divSystemContentElement('<span style="color: red;">' + result.text + '</span>'));
+        }
     });
 
     socket.on('message', function(message) {
@@ -54,16 +58,22 @@ $(document).ready(function() {
         $('#messages').append(newElement);
     });
 
-    socket.on('rooms', function(rooms) {
+    socket.on('rooms', function(roomsInfo) {
         $('#room-list div').remove();
+        var roomsPwd = roomsInfo.roomsPwd;
+        var rooms = roomsInfo.rooms;
         for ( var room in rooms) {
             room = room.substring(1, room.length);
             var style = '';
+            var attr = '';
             if (room != '') {
                 if(room == $('#room').text()) {
                     style = 'color: red';
                 }
-                $('#room-list').append(divEscapedContentElement(room, style));
+                if (roomsPwd[room]) {
+                    attr = 'pwd="pwd"';
+                }
+                $('#room-list').append(divEscapedContentElement(room, style, attr));
             }
         }
 
@@ -71,7 +81,11 @@ $(document).ready(function() {
             if($(this).text() == $('#room').text()) {
                 return;
             }
-            chatApp.processCommand('/join ' + $(this).text());
+            if($(this).attr('pwd')) {
+                alert('This room need a password, please use /join_pwd command to join it.');
+            } else {
+                chatApp.processCommand('/join ' + $(this).text());
+            }
             $('#send-message').focus();
         });
     });

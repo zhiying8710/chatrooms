@@ -18,6 +18,13 @@ Chat.prototype.changeRoom = function(room) {
     });
 };
 
+Chat.prototype.changeRoomWithPwd = function(room, pwd) {
+    this.socket.emit('join_pwd', {
+        newRoom : room,
+        pwd : pwd
+    });
+};
+
 Chat.prototype.processCommand = function(command) {
     var words = command.split(' ');
     command = words[0].substring(1, words[0].length).toLowerCase();
@@ -32,6 +39,15 @@ Chat.prototype.processCommand = function(command) {
         words.shift();
         var name = words.join(' ');
         this.socket.emit('nameAttempt', name);
+        break;
+    case 'join_pwd':
+        words.shift();
+        var name_pwd = words.join(' ');
+        var sep = '$';
+        var i = name_pwd.indexOf(sep);
+        name = name_pwd.substring(0, i);
+        var pwd = name_pwd.substring(i + sep.length);
+        this.changeRoomWithPwd(name, pwd);
         break;
     default:
         message = 'Unrecognized command.';
