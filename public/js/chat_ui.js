@@ -10,6 +10,10 @@ function divSystemContentElement(message) {
 
 function processUserInput(chatApp, socket) {
     var message = $('#send-message').val();
+    $('#send-message').val('');
+    if(!$.trim(message)) {
+        return;
+    }
     var systemMessage;
 
     if (message.charAt(0) === '/') {
@@ -24,7 +28,6 @@ function processUserInput(chatApp, socket) {
         $('#messages').scrollTop($('#messages').prop('scrollHeight'));
     }
 
-    $('#send-message').val('');
 }
 
 var socket = io.connect();
