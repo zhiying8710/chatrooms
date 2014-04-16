@@ -79,7 +79,6 @@ $(document).ready(function() {
              var nn = usersInRoom[i];
              var style = '';
              if(nn == $('#send-message').attr('placeholder')) {
-                 nn = nn + '(Yourself)';
                  style = 'color: red;';
              }
              $('#usersInRoom-list').append(divEscapedContentElement(nn, style));
