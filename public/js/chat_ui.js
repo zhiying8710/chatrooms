@@ -36,7 +36,7 @@ $(document).ready(function() {
             message = '<span style="color: gray;">You are now known as ' + result.name + '.</span>';
             $('#send-message').attr('placeholder', result.name);
         } else {
-            messgae = '<span style="color: red;">' + result.message + '</span>';
+            message = '<span style="color: red;">' + result.message + '</span>';
         }
         $('#messages').append(divSystemContentElement(message));
     });
@@ -58,7 +58,6 @@ $(document).ready(function() {
             var style = '';
             if (room != '') {
                 if(room == $('#room').text()) {
-                    room = room + ('(current)');
                     style = 'color: red';
                 }
                 $('#room-list').append(divEscapedContentElement(room, style));
