@@ -36,10 +36,10 @@ a {
     overflow: auto;
     background-color: #DDDDDD;
 }
-#usersInRoom-list div,p {
+#usersInRoom-list div, p {
     border-bottom: 1px solid #eee;
 }
-#room-list div,p {
+#room-list div, p {
     border-bottom: 1px solid #eee;
 }
 #room-list div:hover {

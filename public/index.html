@@ -1,40 +1,74 @@
 <!doctype html>
 <html lang='en'>
-<head>
-<title>Chat</title>
-<link rel='stylesheet' href='/css/style.css'></link>
-</head>
-<body>
-<div id='content'>
-<div id='room'></div>
-<div id='room-list'>
-    <p>Rooms:</p>
-</div>
-<div id='usersInRoom-list'>
-    <p>Users in this Room(<span id='users_in_room_count'></span>):</p>
-</div>
-<form onsubmit='$("#send-button").trigger("click");return false;'>
-<div id='messages'></div>
-<input id='send-message' placeholder=''/>
-<input id='at' style='float: left;' placeholder='@somebody'/>
-<input id='send-button' type='submit' value='Send'/>
-<div>Chat commands:</div>
-<ul>
-<li>Change nickname: <code>/nick [username]</code></li>
-<li>Join/create room: <code>/join [room name]</code></li>
-<li>Join/create room with password: <code>/join_pwd [room name]$[password]</code></li>
-</ul>
-<div>Usage:</div>
-<ul>
-<li>You can click the nickname which has been listed in <code>Users in this Room</code> to @ he/she.</li>
-<li>You can click the room name which has been listed in <code>Rooms</code> to join it.</li>
-</ul>
-</div>
-</form>
-</div>
-<script src='/js/socket.io.js' type='text/javascript'></script>
-<script src='/js/jquery-1.8.0.min.js' type='text/javascript'></script>
-<script src='/js/chat.js' type='text/javascript'></script>
-<script src='/js/chat_ui.js' type='text/javascript'></script>
-</body>
+    <head>
+        <title>Chat</title>
+        <link rel='stylesheet' href='/css/style.css' />
+    </head>
+    <body>
+        <div id='content'>
+            <div id='room'></div>
+            <div id='room-list'>
+                <p>
+                    Rooms:
+                </p>
+            </div>
+            <div id='usersInRoom-list'>
+                <p>
+                    Users in this Room(<span id='users_in_room_count'>0</span>):
+                </p>
+            </div>
+            <form onsubmit='$("#send-button").trigger("click");return false;'>
+                <div id='messages'></div>
+                <input id='send-message' placeholder=''/>
+                <input id='at' style='float: left;' placeholder='@somebody'/>
+                <input id='send-button' type='submit' value='Send'/>
+                <div>
+                    Chat commands:
+                </div>
+                <ul>
+                    <li>
+                        Change nickname:
+                        <code>
+                            /nick [username]
+                        </code>
+                    </li>
+                    <li>
+                        Join/create room:
+                        <code>
+                            /join [room name]
+                        </code>
+                    </li>
+                    <li>
+                        Join/create room with password:
+                        <code>
+                            /join_pwd [room name]$[password]
+                        </code>
+                    </li>
+                </ul>
+                <div>
+                    Usage:
+                </div>
+                <ul>
+                    <li>
+                        You can click the nickname which has been listed in
+                        <code>
+                            Users in this Room
+                        </code>
+                        to @ he/she.
+                    </li>
+                    <li>
+                        You can click the room name which has been listed in
+                        <code>
+                            Rooms
+                        </code>
+                        to join it.
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <script src='/js/socket.io.js' type='text/javascript'></script>
+        <script src='/js/jquery-1.8.0.min.js' type='text/javascript'></script>
+        <script src='/js/chat.js' type='text/javascript'></script>
+        <script src='/js/chat_ui.js' type='text/javascript'></script>
+    </body>
 </html>
