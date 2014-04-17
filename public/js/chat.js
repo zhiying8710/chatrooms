@@ -4,10 +4,11 @@ var Chat = function(socket) {
     this.socket = socket;
 };
 
-Chat.prototype.sendMessage = function(room, text) {
+Chat.prototype.sendMessage = function(room, text, atNicknames) {
     var message = {
         room : room,
-        text : text
+        text : text,
+        at: atNicknames
     };
     this.socket.emit('message', message);
 };

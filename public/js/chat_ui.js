@@ -1,5 +1,15 @@
 // binge@sf
 
+String.prototype.startWith=function(str){
+  var reg=new RegExp("^"+str);
+  return reg.test(this);
+};
+
+String.prototype.endWith=function(str){
+  var reg=new RegExp(str+"$");
+  return reg.test(this);
+};
+
 function divEscapedContentElement(message, style, attr) {
     return $('<div style="' + style + '"' + attr + '></div>').text(message);
 }
@@ -10,6 +20,7 @@ function divSystemContentElement(message) {
 
 function processUserInput(chatApp, socket) {
     var message = $('#send-message').val();
+    var atnns = $('#at').val();
     $('#send-message').val('');
     if(!$.trim(message)) {
         return;
@@ -22,8 +33,8 @@ function processUserInput(chatApp, socket) {
             $('#messages').append(divSystemContentElement('<span style="color: blue;">' + systemMessage + '</span>'));
         }
     } else {
-        chatApp.sendMessage($('#room').text(), message);
-        message = 'You: ' + message;
+        chatApp.sendMessage($('#room').text(), message, atnns);
+        message = 'You: ' + message + (atnns? (' to [' + atnns + ']') : '');
         $('#messages').append(divEscapedContentElement(message, 'color: blue;'));
         $('#messages').scrollTop($('#messages').prop('scrollHeight'));
     }
@@ -54,8 +65,24 @@ $(document).ready(function() {
     });
 
     socket.on('message', function(message) {
-        var newElement = $('<div style="' + message.style + '"></div>').text(message.text);
-        $('#messages').append(newElement);
+        var newElement = $('<div style="' + message.style + '"></div>').text(message.from + ": " + message.text);
+        var at = message.at;
+        if(at) {
+            var curNickname = $('#send-message').attr('placeholder');
+            var f = false;
+            var atnns = at.split(',');
+            for(var a in atnns) {
+                if(atnns[a] == curNickname) {
+                    f = true;
+                    break;
+                }
+            }
+            if (f) {
+                $('#messages').append(newElement.append('<span style="color: red;"> [private message].</span>'));
+            }
+        } else {
+            $('#messages').append(newElement);
+        }
     });
 
     socket.on('rooms', function(roomsInfo) {
@@ -100,6 +127,28 @@ $(document).ready(function() {
              }
              $('#usersInRoom-list').append(divEscapedContentElement(nn, style));
          }
+         $('#usersInRoom-list div').click(function() {
+             if($(this).text() == $('#send-message').attr('placeholder')) {
+                 return;
+             }
+             var val = $('#at').val();
+             if(val) {
+                 var vs = val.split(',');
+                 var f = true;
+                 for (var v in vs) {
+                     if (vs[v] == $(this).text()) {
+                         f = false;
+                         break;
+                     }
+                 }
+                 if(f) {
+                     val = $(this).text() + ',' + val;
+                 }
+             } else {
+                 val = $(this).text();
+             }
+             $('#at').val(val);
+         });
     });
 
     setInterval(function() {
