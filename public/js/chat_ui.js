@@ -65,7 +65,7 @@ $(document).ready(function() {
     });
 
     socket.on('message', function(message) {
-        var newElement = $('<div style="' + message.style + '"></div>').text(message.from + ": " + message.text);
+        var newElement = $('<div style="' + message.style + '"></div>').text((message.from ? (message.from + ": ") : '') + message.text);
         var at = message.at;
         if(at) {
             var curNickname = $('#send-message').attr('placeholder');
