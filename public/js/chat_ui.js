@@ -119,6 +119,7 @@ $(document).ready(function() {
 
     socket.on('usersInRoom', function(usersInRoom){
          $('#usersInRoom-list div').remove();
+         $('#users_in_room_count').text(usersInRoom.length);
          for ( var i in usersInRoom) {
              var nn = usersInRoom[i];
              var style = '';
