@@ -16,7 +16,7 @@ a {
 }
 #messages {
     width: 650px;
-    height: auto;
+    height: 300px;
     overflow: auto;
     background-color: #eee;
     margin-bottom: 1em;
