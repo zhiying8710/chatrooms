@@ -21,9 +21,11 @@ function serveStatic(resp, cache, absPath) {
     if(cache[absPath]) {
         sendFile(resp, absPath, cache[absPath]);
     } else {
-        fs.exists(absPath, function(exists){
-            if(exists) {
-                fs.readFile(absPath, function(err, data){
+        fs.open(absPath, 'r', function(err, fd){
+	    if(err) {
+                err404(resp);
+            } else {
+		fs.readFile(absPath, function(err, data){
                     if(err) {
                         err404(resp);
                     } else {
@@ -31,10 +33,8 @@ function serveStatic(resp, cache, absPath) {
                         sendFile(resp, absPath, data);
                     }
                 });
-            } else {
-                err404(resp);
             }
-        });
+	});
     }
 }
 
